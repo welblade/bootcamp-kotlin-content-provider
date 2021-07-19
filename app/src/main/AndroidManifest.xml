@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.github.welblade.contentprovider">
 
     <application
@@ -9,6 +10,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ContentProvider">
+        <provider
+            android:name=".database.NotesProvider"
+            android:authorities="com.github.welblade.contentprovider.provider"
+            android:enabled="true"
+            android:exported="true"
+            tools:ignore="ExportedContentProvider"></provider>
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
