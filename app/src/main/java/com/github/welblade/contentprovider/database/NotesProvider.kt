@@ -32,7 +32,7 @@ class NotesProvider : ContentProvider() {
         if(uriMacther.match(uri) == NOTES_BY_ID){
             val db: SQLiteDatabase = dbHelper.writableDatabase
             val affectedLines = db.delete(TABLE_NOTES, "$_ID = ?", arrayOf(uri.lastPathSegment))
-            db.close()
+            //db.close()
             context?.contentResolver?.notifyChange(uri, null)
             return affectedLines
         }else{
@@ -47,7 +47,7 @@ class NotesProvider : ContentProvider() {
             val db: SQLiteDatabase = dbHelper.writableDatabase
             val id = db.insert(TABLE_NOTES, null, values)
             val insertUri = Uri.withAppendedPath(BASE_URI, id.toString())
-            db.close()
+            //db.close()
             context?.contentResolver?.notifyChange(uri, null)
             return insertUri
         }else{
@@ -63,15 +63,17 @@ class NotesProvider : ContentProvider() {
             uriMacther.match(uri) == NOTES -> {
                 val db: SQLiteDatabase = dbHelper.readableDatabase
                 val cursor = db.query(TABLE_NOTES, projection, selection, selectionArgs, null, null, sortOrder)
-                db.close()
+
                 cursor.setNotificationUri(context?.contentResolver, uri)
+                //db.close()
                 cursor
             }
             uriMacther.match(uri) == NOTES_BY_ID -> {
                 val db: SQLiteDatabase = dbHelper.readableDatabase
                 val cursor = db.query(TABLE_NOTES, projection, "$_ID = ?", arrayOf(uri.lastPathSegment), null, null, sortOrder)
-                db.close()
+
                 cursor.setNotificationUri(context?.contentResolver, uri)
+                //db.close()
                 cursor
             }
             else -> {
@@ -87,8 +89,9 @@ class NotesProvider : ContentProvider() {
         if(uriMacther.match(uri) == NOTES_BY_ID){
             val db: SQLiteDatabase = dbHelper.writableDatabase
             val affectedLines = db.update(TABLE_NOTES, values, "$_ID = ?", arrayOf(uri.lastPathSegment))
-            db.close()
+
             context?.contentResolver?.notifyChange(uri, null)
+            //db.close()
             return affectedLines
         }else{
             throw UnsupportedSchemeException("Invalid Uri to update.")

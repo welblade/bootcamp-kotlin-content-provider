@@ -12,6 +12,7 @@ import com.github.welblade.contentprovider.database.DbHelper.Companion.TITLE_NOT
 import com.github.welblade.contentprovider.database.NotesProvider.Companion.NOTES_URI
 import com.github.welblade.contentprovider.databinding.ActivityMainBinding
 import com.github.welblade.contentprovider.ui.NoteAdapter
+import com.github.welblade.contentprovider.ui.NoteDetailFragment
 
 class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> {
     private val activityMainBinding: ActivityMainBinding by lazy {
@@ -27,6 +28,8 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
         setContentView(activityMainBinding.root)
         activityMainBinding.rvNotes.layoutManager = LinearLayoutManager(this)
         activityMainBinding.rvNotes.adapter = adapter
+        setListeners()
+        LoaderManager.getInstance(this).initLoader(0,null,this)
     }
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
@@ -40,8 +43,12 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
     }
 
     private fun setListeners(){
+        activityMainBinding.btnAdd.setOnClickListener {
+            NoteDetailFragment().show(supportFragmentManager, "dialog")
+        }
         adapter.cardClickListener = {
-
+            val fragment = NoteDetailFragment.newInstance(it)
+            fragment.show(supportFragmentManager, "dialog")
         }
         adapter.deleteListener = {
             contentResolver.delete(
@@ -53,10 +60,10 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
     }
 
     override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor?) {
-        TODO("Not yet implemented")
+        if (data != null) { adapter.setCursor(data) }
     }
 
     override fun onLoaderReset(loader: Loader<Cursor>) {
-        TODO("Not yet implemented")
+        adapter.setCursor(null)
     }
 }

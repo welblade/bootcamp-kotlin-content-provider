@@ -4,4 +4,7 @@
     <string name="remove">Remove</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
+    <string name="edit_note">Edit note</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 </resources>
